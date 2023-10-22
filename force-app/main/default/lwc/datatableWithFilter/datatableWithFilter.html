@@ -1,0 +1,36 @@
+<template>
+		<lightning-card title ="Account List" variant="Narrow" icon-name = "standard:account">
+
+				<div class="slds-grid slds-wrap slds-p-around--small" style="column-gap:10px;justify-content:center;">
+						 <template if:true={showSpinner}>
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </template>
+						<div class="slds-col">
+								<lightning-input type="date" data-id="date" label="Birthdate" onchange={handleInputChange}></lightning-input>
+						</div>
+						<div class="slds-col">
+								<lightning-combobox
+																		name="fieldInfo"
+																		label="Type"
+																		value={selectedValue}
+																		placeholder="Select field label"
+																		options={picklistValues}
+																		onchange={handleChange} >
+								</lightning-combobox>
+						</div>
+						<div class="slds-col slds-m-around--large">
+								 <lightning-button variant="brand" label="Search" onclick={searchRecords}  title="Search" icon-name="utility:search"></lightning-button>
+								 <lightning-button variant="brand" style="margin-left:30px;" label="Reset" onclick={resetRecords}  title="Rearch" icon-name="utility:clear"></lightning-button>
+						</div>
+							
+				</div>
+				<div class="slds-p-around_x-small slds-scrollable--y" style="height: 300px;">
+				<template if:true={data}>
+						<lightning-datatable data={data} columns={columns} key-field="Id" hide-checkbox-column show-row-number-column="true"></lightning-datatable>
+				</template>
+				<template if:true={error}>
+						{error}
+				</template>
+				</div>
+		</lightning-card>
+</template>

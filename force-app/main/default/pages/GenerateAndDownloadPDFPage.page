@@ -1,0 +1,308 @@
+<apex:page standardController="Account" extensions="GenerateAndDownloadPDFController" applyBodyTag="false" applyHtmlTag="false" standardStylesheets="false" showHeader="false" sidebar="false">
+    <apex:includeScript value="/lightning/lightning.out.js" />
+    
+    
+    <html>
+        <head>
+            <script>
+        function showToast(message) {
+            sforce.one.showToast({
+                "title": "Success!",
+                "message": message,
+                "type": "success"
+            });
+        }
+    </script>
+            <style type="text/css" media="print">
+                table#bodyTable {
+                table-layout: fixed;
+                }
+                div.address{
+                margin-top:-75px;
+                font-size:12px;
+                }
+                table.fixed { table-layout:fixed; }
+                table.fixed td, th { word-wrap: break-word; }
+                
+                @page {
+                margin-top: 150px;
+                @top-right {
+                content: “Page ” counter(page);
+                }
+                @top-center {
+                content: element(header);
+                }
+                @bottom-left {
+                content: element(footer);
+                }
+                @bottom-center {
+                content: "Page " counter(page) " of " counter(pages);
+                }
+                }
+                div.header {
+                padding-top: 8px;
+                padding-left: 10px;
+                padding-right: 7px;
+                position: running(header);
+                }
+                .pagenumber:before {
+                content: counter(page);
+                }
+                .pagecount:before {          
+                content: counter(pages);
+                }
+                
+            </style>
+            <div class="header">
+                <div>
+                   <!-- <apex:image url="{!$Resource.DynaconsLogo}" height="80px" width="200px" alt="My Image" />-->
+                </div>
+                <div class="address">
+                    <span style="float:right;">Dynacons Systems Solutions Ltd.</span><br/>
+                    <span style="float:right;">Sunteck Center A Wing,</span><br/>
+                    <span style="float:right;">Subhash Road,</span><br/>
+                    <span style="float:right;">Vile Parle East,</span><br/>
+                    <span style="float:right;">Mumbai 400057</span><br/>
+                    <span style="float:right;">Maharashtra India</span>
+                </div>
+            </div>
+        </head>
+     
+    <apex:form >
+         <apex:commandButton value="Download PDF" action="{!generateAndDownloadPDF}" oncomplete="showToast('Message saved successfully');" />
+    </apex:form>
+         <body>
+            <div style="border-top:1px solid black;border-left:1px solid black; border-right:1px solid black; text-align:center; background-color:#ECECEC;">
+                <span style="font-size:12px;"><b>Prospect</b></span>
+            </div>
+            <div style="display: flex; border:1px solid black; max-width:100%;">
+                <div style="border-bottom:1px solid black;">
+                    <div style=" font-size:12px; padding: 10px; margin: 5px; display: inline-block; height:200px; width:315px;">
+                        <div style="overflow:auto;">
+                            <div style="width:90px; border: 1px solid #ccc; background-color:#ECECEC;">
+                                <b>BILL TO</b>
+                                <b>{!account.Name}</b>
+                            </div>
+                        </div>
+                        <div style="overflow:auto; padding-top:70px;">
+                            <div style="width:90px; border: 1px solid #ccc; background-color:#ECECEC;">
+                                <b>SHIP TO</b>
+                                <b>{!Account.Name}</b>
+                            </div>
+                        </div>
+                        <div style="overflow:auto; padding-top:70px;">
+                            <div style="width:90px; border: 1px solid #ccc; background-color:#ECECEC;">
+                                <b>Payment Terms </b>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="font-size:12px; padding: 10px; margin: 5px;  display: inline-block;height:200px; width:315px;">
+                        <div style="overflow:auto;">
+                            <div style="width:90px; border: 1px solid #ccc; background-color:#ECECEC;">
+                                <b>Date</b>
+                            </div>
+                        </div>
+                        <div style="overflow:auto; padding-top:10px;">
+                            <div style="width:90px; border: 1px solid #ccc; background-color:#ECECEC;">
+                                <b>USD - INR </b>
+                            </div>
+                        </div>
+                        <div style="overflow:auto; padding-top:10px;">
+                            <div style="width:90px; border: 1px solid #ccc; background-color:#ECECEC;">
+                                <b>Quote# </b>
+                            </div>
+                        </div>
+                        <div style="overflow:auto; padding-top:15px;">
+                            <div style="width:90px; border: 1px solid #ccc; background-color:#ECECEC;">
+                                <b>Sales Rep </b>
+                            </div>
+                        </div>
+                        <div style="overflow:auto; padding-top:45px;">
+                            <div style="width:90px; border: 1px solid #ccc; background-color:#ECECEC;">
+                                <b>Lead Time </b>
+                            </div>
+                        </div>
+                        <div style="overflow:auto; padding-top:15px;">
+                            <div style="width:90px; border: 1px solid #ccc; background-color:#ECECEC;">
+                                <b>Validity </b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table border="1px solid black" style="table-layout: fixed; border-collapse: collapse; margin-top:20px;font-size:12px;" width="100%">
+                    <tr style="background-color:#ECECEC;">
+                        <th width="60px" style="text-align:center; word-wrap: break-word;"><b>Part Code</b></th>
+                        <th width="250px" style="text-align:center;"><b>Description</b></th>
+                        <th width="60px" style="text-align:center;"><b>Lead Time</b></th>
+                        <th width="10px" style="text-align:center"><b>Qty</b></th>
+                        <th width="70px" style="text-align:center;"><b>Unit Price (INR)</b></th>
+                        <th width="70px" style="text-align:center;"><b>Amount (INR)</b></th>
+                    </tr>
+                    <!-- <apex:repeat value="{!customObjects}" var="obj">-->
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td style="text-align:center;">test</td>
+                            <td style="text-align:center;"></td>
+                            <!--<td><apex:image url="{!$Resource.RupeeLogo}" width="10" height="10"/><span style="margin-left:10px;">1,00,000.0000</span></td>
+                            <td><apex:image url="{!$Resource.RupeeLogo}" width="10" height="10"/><span style="margin-left:10px;">1,00,000.00</span></td>-->
+                        </tr>
+                   <!-- </apex:repeat>-->
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align:center; background-color:#ECECEC; font-size:10px;">SUB TOTAL INR</td>
+                        <!--<td><apex:image url="{!$Resource.RupeeLogo}" width="10" height="10"/><span style="margin-left:10px;"><b>1,00,000.00</b></span></td>-->
+                    </tr>
+                     <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align:center; font-size:10px;">GST 18%</td>
+                        <!--<td><apex:image url="{!$Resource.RupeeLogo}" width="10" height="10"/><span style="margin-left:10px;">1,00,000.00</span></td>-->
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align:center; font-size:10px;">TCS 0.1%</td>
+                        <!--<td><apex:image url="{!$Resource.RupeeLogo}" width="10" height="10"/><span style="margin-left:10px;">1,00,00000.00</span></td>-->
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align:center; font-size:10px; background-color:#ECECEC;"><b>TOTAL INR</b></td>
+                        <!--<td><apex:image url="{!$Resource.RupeeLogo}" width="10" height="10"/><span style="margin-left:10px;"><b>1,00,00000.00</b></span></td>-->
+                    </tr>
+                    <tr>
+                        <td style="text-align:center; color:#1997e2;" colspan="6"><b>THIS PROPOSAL INCLUDES THE CONDITIONS NOTED:</b></td>
+                    </tr>
+                     <tr>
+                        <td colspan="6"> Order once placed cannot be cancelled or returned</td>
+                     </tr>
+                    <tr>
+                        <td colspan="6"> Taxes Extra at actual as mentioned in quote. TCS 1% will be applicable if billing entity is outside India</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6"> Installation &amp; support charges extra actual if required</td>
+                     </tr>
+                  </table>
+             </div>
+            <!--Page Break-->
+            <div style="page-break-after: always;">&nbsp; </div>
+            <div class="">
+                <div style="font-size:12px;height:20px;width:100%; border:2px solid black; background-color:#ECECEC;text-align:center;">
+                    <span style="padding-top:20px;"><b>Terms &amp; Condition</b></span>
+                </div>
+                
+                <span style="font-size:14px;"><b>1.</b> All orders for Goods shall be deemed to be an offer by the Buyer to purchase Goods from the Seller.</span><br/>                
+                <span style="font-size:14px;"><b>2.</b> Any variation to these Conditions (including any special terms and conditions agreed between the parties including without limitation as to discounts) shall be inapplicable unless agreed in writing by the Seller.</span><br/>
+                <span style="font-size:14px;"><b>3.</b> Once the order placed by the Buyer, it shall not be cancelled.</span><br/>
+                <span style="font-size:14px;"><b>4.</b> The buyer shall mention the following on its Purchase Order:</span><br/>
+                <span style="font-size:14px;margin-left:50px;">a) Billing address with GST No.</span><br/>
+                <span style="font-size:14px;margin-left:50px;">b) Shipping address with GST No.</span><br/>
+                <span style="font-size:14px;margin-left:50px;">c) Quotation number with date</span><br/>
+                <span style="font-size:14px;"><b>5.</b> Any changes in the billing name &amp; address, GST, Shipping name and address will be accepted only before the goods are invoiced. No changes will be accepted thereafter.</span><br/>
+                <span style="font-size:14px;"><b>6.</b> Payment for the order is to be made by IMPS/RTGS/ NEFT/ D.D/ via transfer along with P.O unless a credit period has been agreed with Dynacons Systems &amp; Solutions Ltd.</span><br/>
+                <div style="text-align:center;">
+                    <span style="font-size:12px;color:red;"><b>INR Payments ONLY</b></span>
+                </div>
+                <table border="2px dark black" style="Width:100% ;table-layout : fixed ; border-collapse: collapse;">
+                    <tr style="margin-left:10px;">
+                        <td width="200px" style="padding-left:30px;font-size:12px;">Beneficiary Name</td>
+                        <td style="padding-left:30px;font-size:12px;">Dynacons Systems &amp; Solutions Ltd</td>
+                    </tr>
+                    <tr style="margin-left:10px;">
+                        <td width="200px" style="padding-left:30px;font-size:12px;">Bank Name</td>
+                        <td style="padding-left:30px;font-size:12px;">HDFC Bank</td>
+                    </tr>
+                    <tr style="margin-left:10px;">
+                        <td width="200px" style="padding-left:30px;font-size:12px;">Branch Name</td>
+                        <td style="padding-left:30px;font-size:12px;">Andheri West- Shoppers Stop</td>
+                    </tr>
+                    <tr style="margin-left:10px;">
+                        <td width="200px" style="padding-left:30px;font-size:12px;">A/C No.</td>
+                        <td style="padding-left:30px;font-size:12px;">57500000636212</td>
+                    </tr>
+                    <tr style="margin-left:10px;">
+                        <td width="200px" style="padding-left:30px;font-size:12px;">Branch Address</td>
+                        <td style="padding-left:30px;font-size:12px;">Ganga Jamuna Apts. Gr. Floor Opp. Shoppers Stop, S.V. Road, Andheri(W), Mumbai- 400058</td>
+                    </tr>
+                    <tr style="margin-left:10px;">
+                        <td width="200px" style="padding-left:30px;font-size:12px;">Type OF Account</td>
+                        <td style="padding-left:30px;font-size:12px;">Cash Credit</td>
+                    </tr>
+                    <tr style="margin-left:10px;">
+                        <td width="200px" style="padding-left:30px;font-size:12px;">IFSC Code</td>
+                        <td style="padding-left:30px;font-size:12px;">HDFC0000114</td>
+                    </tr>
+                    <tr style="margin-left:10px;">
+                        <td width="200px" style="padding-left:30px;font-size:12px;">SWIFT Code</td>
+                        <td style="padding-left:30px;font-size:12px;">HDFCINBB</td>
+                    </tr>
+                </table>
+                <div style="text-align:center;padding-top:10px;">
+                    <span style="font-size:12px;color:red;"><b>International Payments ONLY</b></span>
+                </div>
+                <table border="2px dark black" style="Width:100% ;table-layout : fixed ; border-collapse: collapse;">
+                    <tr style="margin-left:10px;">
+                        <td width="200px" style="padding-left:30px;font-size:12px;">Beneficiary Name</td>
+                        <td style="padding-left:30px;font-size:12px;">Dynacons Systems &amp; Solutions Ltd</td>
+                    </tr>
+                    <tr style="margin-left:10px;">
+                        <td width="200px" style="padding-left:30px;font-size:12px;">Bank Name</td>
+                        <td style="padding-left:30px;font-size:12px;">India</td>
+                    </tr>
+                    <tr style="margin-left:10px;">
+                        <td width="200px" style="padding-left:30px;font-size:12px;">Branch Name</td>
+                        <td style="padding-left:30px;font-size:12px;">Bank of Baroda</td>
+                    </tr>
+                    <tr style="margin-left:10px;">
+                        <td width="200px" style="padding-left:30px;font-size:12px;">A/C No.</td>
+                        <td style="padding-left:30px;font-size:12px;">03800500000103</td>
+                    </tr>
+                    <tr style="margin-left:10px;">
+                        <td width="200px" style="padding-left:30px;font-size:12px;">Branch Address</td>
+                        <td style="padding-left:30px;font-size:12px;">189 S V Road, Andheri West, Mumbai-400058</td>
+                    </tr>
+                    <tr style="margin-left:10px;">
+                        <td width="200px" style="padding-left:30px;font-size:12px;">Type OF Account</td>
+                        <td style="padding-left:30px;font-size:12px;">Cash Credit</td>
+                    </tr>
+                    <tr style="margin-left:10px;">
+                        <td width="200px" style="padding-left:30px;font-size:12px;">IFSC Code</td>
+                        <td style="padding-left:30px;font-size:12px;">BARB0ANDHER</td>
+                    </tr>
+                    <tr style="margin-left:10px;">
+                        <td width="200px" style="padding-left:30px;font-size:12px;">SWIFT Code</td>
+                        <td style="padding-left:30px;font-size:12px;">BARBINBBADW</td>
+                    </tr>
+                </table>
+                <span style="font-size:14px;"><b>7.</b> The Seller shall be entitled to charge interest on overdue invoices from the date when payment becomes due Interest to accrue from day to day until the date of payment at a rate of 24% per annum from time to time.</span><br/>
+                <span style="font-size:14px;"><b>8.</b> The Seller reserves the right to grant, refuse restrict, cancel or alter credit terms at its sole discretion at any time.</span><br/>
+                <span style="font-size:14px;"><b>9.</b> If payment of the Price or any part thereof is not made by the due date, the Seller shall be entitled to charge late payment charges.</span><br/>
+                <span style="font-size:14px;"><b>10.</b> Any change in Government taxes / duties will be charged extra at actual.</span><br/>
+                <span style="font-size:14px;"><b>11.</b> Unless otherwise agreed in writing, delivery of the Goods shall take place at the address specified by the Buyer. The Buyer shall make all arrangements necessary to take delivery of the Goods whenever they are tendered for delivery.</span><br/>
+                <span style="font-size:14px;"><b>12.</b> The date of delivery specified by the Seller is an estimate only. Time for delivery shall not be of the essence of the contract and while every reasonable effort will be made to comply with such date’s compliance is not guaranteed and the Buyer shall have no right to damages or to cancel the order for failure for any cause to meet any delivery date stated.</span><br/>
+                <span style="font-size:14px;"><b>13.</b> If the Buyer fails to accept delivery of Goods on the delivery date or within 3 days of notification that they are ready for dispatch whether prior to or after the delivery date the Seller reserves the right to invoice the Goods to the Buyer and charge him therefore. In addition, the Buyer shall then pay reasonable storage charges or demurrage as appropriate in the circumstances until the Goods are either dispatched to the Buyer or disposed of elsewhere.</span><br/>
+                <br/><br/>
+                <span style="font-size:14px;"><b>14.</b> Where the Buyer requires delivery of the Goods by instalments, rescheduling requires the Seller’s written agreement and will not be possible unless written notice is provided and so agreed. Each delivery shall constitute a separate contract and failure by the Buyer to pay the Price in respect of any instalment shall entitle the Seller to treat any other related contract as repudiated in addition to any other rights of the Seller pursuant to these Conditions.</span><br/>
+                <span style="font-size:14px;"><b>15.</b> The Buyer is required to test Goods upon delivery and shall be deemed to have accepted the Goods 3 days after delivery to the Buyer. Accordingly, no claim for defect, damage or quality will be entertained (without prejudice to the Seller’s other rights pursuant to these Conditions) unless written notice together with all supporting evidence is received by the Seller within 3 days of delivery. After acceptance the Buyer shall not be entitled to reject Goods which are not in accordance with the contract.</span><br/>
+                <span style="font-size:14px;"><b>16.</b> Notwithstanding delivery and the passing of risk in the Goods, or any other provision of these conditions, the property in the Goods shall not pass to the Buyer until the Seller has received in cash or cleared funds payment in full of the Price of the Goods and of all other Goods agreed to be sold by the Seller to the Buyer for which payment is then due.</span><br/>
+                <span style="font-size:14px;"><b>17.</b> Until such time as the property in the Goods passes to the Buyer, the Buyer shall hold the Goods as the Seller’s fiduciary agent and bailee and shall keep the Goods separate from those of the Buyer and third parties and properly stored, protected and insured and identified as the Seller’s property.</span><br/>
+                <span style="font-size:14px;"><b>18.</b> The Seller shall not be liable for any delay or failure to perform any of its obligations if the delay or failure results from events or circumstances outside its reasonable control, including but not limited to acts of God, strikes, lock outs, accidents, war, fire, breakdown of plant or machinery or shortage or unavailability of raw materials from a natural source of supply, and the Seller shall be entitled to a reasonable extension of its obligations. If the delay persists for such time as the Seller considers unreasonable, it may without liability on its part, terminate the contract or any part of it.</span><br/>
+                <span style="font-size:14px;"><b>19.</b> The seller shall terminate this arrangement any time by giving 30 days written advance notice to the buyer.</span><br/>
+                <span style="font-size:14px;"><b>20.</b> Nothing contained in these Conditions shall be construed as establishing or implying any partnership or joint venture between the parties and nothing in these Conditions shall be deemed to construe either of the parties as the agent of the other.</span><br/>
+                <span style="font-size:14px;"><b>21.</b> This Agreement shall be governed by and construed in accordance with the law of India and shall have exclusive jurisdiction Court of Mumbai.</span><br/>
+                <span style="font-size:14px;"><b>22.</b> We do everything we can to ensure that the Information along with prices are correct, and we try to keep prices constant. In case of an obvious error (including any error of calculation or clerical error) we reserve right to make changes to above mentioned quotation. We reserve the right to change our prices at any time without further notice.</span><br/>              
+            </div>
+        </body>
+    </html>
+    
+</apex:page>

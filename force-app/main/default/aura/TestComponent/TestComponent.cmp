@@ -1,0 +1,11 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    
+    <lightning:quickActionAPI aura:id="quickActionAPI" />
+    
+    <aura:attribute name="buttonLabel" type="String" />
+    <aura:attribute name="objectName" type="String" />
+    <aura:attribute name="actionName" type="String" />
+    
+    <lightning:button label="{!v.buttonLabel}" onclick="{!c.selectAction}"/>
+    
+</aura:component>

@@ -1,0 +1,3 @@
+<apex:page renderAs="pdf">
+     <apex:image url="https://www.dropbox.com/s/al3yzly3m4dqgzb/rgb-HP1361-3D2-1000px-300dpi_medium.jpeg?dl=1"/> 
+</apex:page>

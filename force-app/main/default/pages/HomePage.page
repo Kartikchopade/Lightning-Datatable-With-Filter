@@ -1,0 +1,42 @@
+<apex:page controller="HomePageController1" showHeader="false">
+    <style>
+        div {
+  				overflow:hidden;
+        		overflow-x:auto;
+        		white-space: nowrap;
+        		overflow-y: hidden;
+         		height: 300px;
+  				width: 600px;
+  				
+				border-style: solid;
+  				border-color: green;
+        		margin-left:10px;
+		}
+        b{
+         	
+        	font-size:18px;
+        }
+       
+        div.scroll{
+        width:575px;
+        overflow: auto;
+        white-space: nowrap;
+        }
+        
+        
+    </style><br/><br/><br/>
+    <h2 style="font-size:18px; color:DodgerBlue;margin-left:20px;margin-top:30px;">Tip,fun fact or Q&amp;A of the day!</h2><br/><br/>
+    
+    <b >Event Title </b><br/>
+    <apex:repeat value="{!Alllist}" var="event">
+        <apex:outputText escape="false" value="{!event.Event_Title__c}"/><br/><br/>
+    </apex:repeat>
+    
+    <b >Event Description </b><br/>
+    <apex:repeat value="{!Alllist}" var="event">
+        <apex:outputText escape="false" value="{!event.Event_Description__c}"/><br/><br/>
+    </apex:repeat>
+    
+    
+    
+</apex:page>

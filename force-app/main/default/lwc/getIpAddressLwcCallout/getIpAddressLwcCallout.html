@@ -1,0 +1,30 @@
+<template>
+		<lightning-card title="My IP Address" icon-name="utility:connected_apps" variant="narrrow">
+				<div class="slds-grid slds-wrap">
+						<span style="text-align:center;"><b>IP Address Get From JS (Call External Server Data into Javascript)</b></span>
+						 <template if:true={showSpinner}>
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </template>
+						<div class="slds-col slds-m-top--small slds-small-size_12-of-12 slds-m-left--large slds-medium-size_6-of-12 slds-large-size_12-of-12">
+								<lightning-button title="Get IP Address" label="Get IP" onclick={getIP}></lightning-button>
+						</div>
+						<div class="slds-col slds-m-top--large  slds-small-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_12-of-12" style="text-align: center;">
+								<span style="font-size: 20px;color: blue;">IP Address is: {myIP}</span>
+						</div>
+				</div>
+				<hr>
+						
+				<div class="slds-grid slds-wrap">
+						<span style="margin-left: 25px;"><b>IP Address Get From Apex</b></span>
+						 <template if:true={showSpinner}>
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </template>
+						<div class="slds-col slds-m-top--small slds-small-size_12-of-12 slds-m-left--large slds-medium-size_6-of-12 slds-large-size_12-of-12">
+								<lightning-button title="Get IP Address" label="Get IP" onclick={getIPfromApex}></lightning-button>
+						</div>
+						<div class="slds-col slds-m-top--large  slds-small-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_12-of-12" style="text-align: center;">
+								<span style="    font-size: 20px;color: blue;">IP Address is: {myIPApex}</span>
+						</div>
+				</div>
+		</lightning-card>
+</template>
